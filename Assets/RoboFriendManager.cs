@@ -24,6 +24,9 @@ public class RoboFriendManager : MonoBehaviour
 
     private bool helloName = false;
 
+    private bool goodDay = false;
+    private bool badDay = false;
+
     void Start()
     {
         roboFriendSays = roboFriendMessageField.GetComponent<TextMeshProUGUI>();
@@ -42,19 +45,44 @@ public class RoboFriendManager : MonoBehaviour
 
         if(!string.IsNullOrEmpty(msgToRoboFriend))
         {
-            if(msgToRoboFriend.Contains("good"))
+            if(msgToRoboFriend.Contains("good") || msgToRoboFriend.Contains("well") || msgToRoboFriend.Contains("not bad"))
             {
                 currentFace.SetActive(false);
                 faces[2].SetActive(true);
                 currentFace = faces[2];
                 roboFriendSays.text = "I'm so happy to hear that " + userName + "! Why are you good?";
+                badDay = false;
+                goodDay = true;
             }
-            if(msgToRoboFriend.Contains("bad"))
+            else if(msgToRoboFriend.Contains("bad") || msgToRoboFriend.Contains("not well") || msgToRoboFriend.Contains("not good"))
             {
                 roboFriendSays.text = "I'm sorry to hear that " + userName + "! What's wrong?";
                 currentFace.SetActive(false);
                 faces[1].SetActive(true);
                 currentFace = faces[1];
+                goodDay = false;
+                badDay = true;
+            }
+            else if(msgToRoboFriend.Contains("you are") && (msgToRoboFriend.Contains("stupid") || msgToRoboFriend.Contains("idiot")))
+            {
+                currentFace.SetActive(false);
+                faces[3].SetActive(true);
+                currentFace = faces[3];
+                roboFriendSays.text = "Stop being so mean!";
+            }
+            else if (msgToRoboFriend.Contains("sorry"))
+            {
+                roboFriendSays.text = "That's okay " + userName + "!";
+                currentFace.SetActive(false);
+                faces[0].SetActive(true);
+                currentFace = faces[0];
+            }
+            else if (goodDay && msgToRoboFriend.Contains("fun"))
+            {
+                currentFace.SetActive(false);
+                faces[2].SetActive(true);
+                currentFace = faces[2];
+                roboFriendSays.text = "That sounds very nice " + userName + "!";
             }
             else
             {
